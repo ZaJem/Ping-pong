@@ -22,12 +22,18 @@ class GameSprite(sprite.Sprite):
 #класс главного игрока
 class Player(GameSprite):
    #метод для управления спрайтом стрелками клавиатуры
-    def update(self):
+    def update_r(self):
         keys = key.get_pressed()
-        if keys[K_LEFT] and self.rect.x > 5:
-            self.rect.x -= self.speed
-        if keys[K_RIGHT] and self.rect.x < win_width - 80:
-            self.rect.x += self.speed
+        if keys[K_UP] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys[K_DOWN] and self.rect.y < win_width - 80:
+            self.rect.y += self.speed
+    def update_l(self):
+        keys = key.get_pressed()
+        if keys[K_w] and self.rect.y > 5:
+            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.y < win_width - 80:
+            self.rect.y += self.speed
 
 #игровая сцена:
 back_color = (200, 255, 255)
@@ -46,6 +52,8 @@ ball = GameSprite('sinus.png', 200, 200, 50, 50, 4)
 finish = False
 FPS = 60
 clock = time.Clock()
+speed_x = 2
+speed_y = 2
 
 #основной цикл игры:
 run = True #флаг сбрасывается кнопкой закрытия окна
@@ -55,9 +63,17 @@ while run:
         if e.type == QUIT:
             run = False
 
+    window.fill(back_color)
+    ball.rect.x += speed_x
+    #ball.rect.y -= speed_y
+
+
     racket1.reset()
     racket2.reset()
     ball.reset()
+    racket1.update_l()
+    racket2.update_r()
+    
 
     display.update()
     clock.tick(FPS)
